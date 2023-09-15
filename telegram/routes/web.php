@@ -2,8 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
-use Telegram\Bot\Objects\Chat;
-
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +22,19 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/enviar-mensaje', function () {
-    Telegram::sendMessage([
-        'chat_id' => 6459813431,
-        'text' => 'Hola desde Laravel y mi bot de Telegram!',
-    ]);
+Route::get('/botUpdates', function () {
 
-    return 'Mensaje enviado con éxito.';
+    $url = "https://api.telegram.org/bot6593505415:AAEX-DKVXK3GqsJSm-WrsXw1wrw-hD1J5nU/getUpdates?offset=6459813431";
+
+    $response = Http::get($url);
+
+    if ($response->successful()) {
+        $content = $response->body();
+
+        return $content;
+    } else {
+        return "No se pudo obtener el contenido de la URL.";
+    }
 });
 
 Route::get('/enviar-mensaje-grupo', function () {
@@ -60,7 +65,24 @@ Route::get('/enviar-mensaje-canal', function () {
             'text' => 'Saludos al canal, bot desde Laravel!',
         ]);
 
-        return 'Mensaje enviado al grupo con éxito.';
+        return 'Mensaje enviado al canal con éxito.';
+    } else {
+        return 'No se pudo obtener el chat_id del grupo.';
+    }
+});
+
+Route::get('/enviar-mensaje-miguel', function () {
+    
+    $chatId = '6459813431';
+
+    if ($chatId !== null) {
+        // Enviar mensaje al grupo
+        Telegram::sendMessage([
+            'chat_id' => $chatId,
+            'text' => 'Saludos Miguel, bot desde Laravel!',
+        ]);
+
+        return 'Mensaje enviado a Miguel con éxito.';
     } else {
         return 'No se pudo obtener el chat_id del grupo.';
     }
