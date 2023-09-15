@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use Telegram\Bot\Objects\Chat;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +23,51 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/prueba', function () {
+Route::get('/enviar-mensaje', function () {
     Telegram::sendMessage([
-        'chat_id' => "@pruebaLaravell",
-        'text' => "ENVIADO DESDE DOMO",
+        'chat_id' => 6459813431,
+        'text' => 'Hola desde Laravel y mi bot de Telegram!',
     ]);
+
+    return 'Mensaje enviado con éxito.';
 });
+
+Route::get('/enviar-mensaje-grupo', function () {
+    
+    $chatId = '-4035758272';
+
+    if ($chatId !== null) {
+        // Enviar mensaje al grupo
+        Telegram::sendMessage([
+            'chat_id' => $chatId,
+            'text' => 'Saludos al grupo, bot desde Laravel!',
+        ]);
+
+        return 'Mensaje enviado al grupo con éxito.';
+    } else {
+        return 'No se pudo obtener el chat_id del grupo.';
+    }
+});
+
+Route::get('/enviar-mensaje-canal', function () {
+    
+    $chatId = '-1001947691586';
+
+    if ($chatId !== null) {
+        // Enviar mensaje al grupo
+        Telegram::sendMessage([
+            'chat_id' => $chatId,
+            'text' => 'Saludos al canal, bot desde Laravel!',
+        ]);
+
+        return 'Mensaje enviado al grupo con éxito.';
+    } else {
+        return 'No se pudo obtener el chat_id del grupo.';
+    }
+});
+
+
+
+
+
 
